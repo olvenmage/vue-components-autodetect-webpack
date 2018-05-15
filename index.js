@@ -74,7 +74,7 @@ function getInjectString (config, context) {
     var injectString = '';
     components.forEach(function (component, index) {
         if (config.type === 'import') {
-            injectString += "import vuecomp" + index + " from '" + component.path + "'; \nVue.component('" + component.name + "', vuecomp" + index + ");\n";
+            injectString += "import vuecomp" + index + " from '@/" + component.path.replace(/\\/g, '/') + "'; \n";
         } else {
             injectString += "Vue.component('" + component.name + "', require('" + component.path +"'));\n";
         }
