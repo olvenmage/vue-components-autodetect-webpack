@@ -74,7 +74,18 @@ function getInjectString (config, context) {
     var injectString = '';
     components.forEach(function (component, index) {
         if (config.type === 'import') {
-            injectString += "import vuecomp" + index + " from '@/" + component.path.replace(/\\/g, '/') + "'; \n";
+             var raw = component.path.replace(/\\/g, '/');
+
+            if (raw.split('.').pop() !== 'vue') {
+                return;
+            }
+
+            var url = "'@/" + raw + "'"
+            var routeUrl =  url.split('.').slice(0, -1).join('.') + ".route.ts'"
+            injectString += "" +
+                "import routeImport"+index+" from "+routeUrl+"; \n " +
+                "let impor"+index+" = () => import(/* webpackChunkName: \""+raw.split('/').pop()+"\"*/ "+url+"); \n " +
+                "Navigation.lazyAdd(routeImport"+index+", impor"+index+");\n "
         } else {
             injectString += "Vue.component('" + component.name + "', require('" + component.path +"'));\n";
         }
