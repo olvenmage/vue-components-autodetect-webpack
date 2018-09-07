@@ -74,7 +74,7 @@ function getInjectString (config, context) {
     var injectString = '';
     components.forEach(function (component, index) {
         if (config.type === 'import') {
-             var raw = component.path.replace(/\\/g, '/');
+            var raw = component.path.replace(/\\/g, '/');
 
             if (raw.split('.').pop() !== 'vue') {
                 return;
